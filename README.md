@@ -20,7 +20,13 @@ make
 
 > You may encounter permission issues when running the `make` command. If so, run the command with `sudo`.
 
-This will build the docker image and open the interactive terminal. The server will run upon startup. If you have a existing container (e.g. you started it with `make` before), `make` will recognize it and start and attach to the existing container.
+This will build the docker image and open the interactive terminal. If a existing container is detected, it will be used. A message will be displayed on the terminal with an instruction to start the server. To start the server, run the command in the instruction. The running command will look like this:
+
+```bash
+/root/start-vanilla-server.sh
+```
+
+> If this document is out of date, please refer to the message displayed on the terminal. The message will contain the correct command to start the server.
 
 In case you need to attach another terminal to the container, you can run:
 

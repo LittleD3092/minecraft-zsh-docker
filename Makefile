@@ -18,17 +18,11 @@ all: build_run
 
 build_run:
 ifeq ($(OS),Windows_NT)
-	@if ((docker ps -a -q -f name=minecraft-custom) -ne $null) { \
-		$(MAKE) start; \
-		$(MAKE) attach_minecraft; \
-	} else { \
-		$(MAKE) build; \
-		$(MAKE) run; \
-	}
+	@if ($$(docker ps -a -q -f name=minecraft-custom)) { make start; make attach; } else { make build; make run; }
 else
 	@if [ $$(docker ps -a -q -f name=minecraft-custom) ]; then \
 		$(MAKE) start; \
-		$(MAKE) attach_minecraft; \
+		$(MAKE) attach; \
 	else \
 		$(MAKE) build; \
 		$(MAKE) run; \
@@ -39,7 +33,8 @@ build:
 	docker build -t minecraft-custom:latest .
 
 run:
-	-docker run -it --name minecraft-custom -p 25565:25565 minecraft-custom:latest zsh
+	-docker run -it --name minecraft-custom -p 25565:25565 minecraft-custom:latest
+	docker stop minecraft-custom
 
 clean:
 	-docker stop minecraft-custom
@@ -49,11 +44,12 @@ clean:
 start:
 	docker start minecraft-custom
 
-attach_minecraft:
-	docker exec -it minecraft-custom /root/start-vanilla-server.sh
+stop:
+	docker stop minecraft-custom
 
 attach:
 	docker exec -it minecraft-custom /bin/zsh
 
 backup:
+	mkdir -p backup/
 	docker cp minecraft-custom:/root/server/ backup/server/

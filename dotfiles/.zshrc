@@ -109,3 +109,9 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# ---
+
+# print cheatcode for starting and stopping the server
+echo "To start the server, run '/root/start-vanilla-server.sh'"
+echo "To stop the server, run 'pkill -f java'"

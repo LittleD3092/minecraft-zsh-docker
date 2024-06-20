@@ -1,3 +1,10 @@
 #!/bin/zsh
-cd ~/server && java -Xmx2048M -Xms2048M -jar minecraft_server.1.20.4.jar nogui
-# cd ~/server && ./run.sh
+
+# Navigate to the server directory
+cd ~/server
+
+# Find the Minecraft server JAR file
+SERVER_JAR=$(ls minecraft_server.*.jar | head -n 1)
+
+# Run the Minecraft server
+java -Xmx2048M -Xms2048M -jar $SERVER_JAR nogui

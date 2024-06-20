@@ -50,21 +50,16 @@ RUN mkdir -p ~/server
 # rcon tool
 RUN git clone https://github.com/Tiiffi/mcrcon.git ~/tools/mcrcon
 RUN cd ~/tools/mcrcon && make && make install
-# auto backup
-RUN apt-get update && apt-get install -y zip
-COPY scripts/backup.sh /root/backup.sh
-RUN chmod +x /root/backup.sh
-RUN apt-get update && apt-get install -y cron
-RUN crontab -l | { cat; echo "0 0 * * * /root/backup.sh"; } | crontab -
 
 # Copy server files
 COPY server/ /root/server
-
-# Install forge
-RUN cd /root/server && java -jar /root/server/forge-1.20.2-48.1.0-installer.jar --installServer
+RUN cd /root/server && echo "eula=true" > eula.txt
 
 # Script for running server
 COPY scripts/start-vanilla-server.sh /root/start-vanilla-server.sh
-COPY scripts/start-forge-server.sh /root/start-forge-server.sh
 RUN chmod +x /root/start-vanilla-server.sh
-RUN chmod +x /root/start-forge-server.sh
+
+
+
+# Entry point
+ENTRYPOINT ["/root/start-vanilla-server.sh"]

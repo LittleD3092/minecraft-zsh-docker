@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y htop
 RUN apt-get update && apt-get install -y build-essential
 
 # Install java 17
-RUN apt-get update && apt-get install -y openjdk-17-jdk
+RUN apt-get update && apt-get install -y openjdk-21-jdk
 
 # Install Minecraft
 RUN mkdir -p ~/backups

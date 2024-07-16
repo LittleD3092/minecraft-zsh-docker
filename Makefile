@@ -18,9 +18,9 @@ all: build_run
 
 build_run:
 ifeq ($(OS),Windows_NT)
-	@if ($$(docker ps -a -q -f name=minecraft-custom)) { make start; make attach; } else { make build; make run; }
+	@if ($$(docker ps -a -q --filter name=^minecraft-custom$)) { make start; make attach; } else { make build; make run; }
 else
-	@if [ $$(docker ps -a -q -f name=minecraft-custom) ]; then \
+	@if [ $$(docker ps -a -q --filter name=^minecraft-custom$) ]; then \
 		$(MAKE) start; \
 		$(MAKE) attach; \
 	else \

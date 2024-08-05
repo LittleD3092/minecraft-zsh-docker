@@ -51,5 +51,12 @@ attach:
 	docker exec -it minecraft-custom /bin/zsh
 
 backup:
+	rm -rf backup/server
 	mkdir -p backup/
-	docker cp minecraft-custom:/root/server/ backup/server/
+	docker cp minecraft-custom:/root/server/ backup/
+
+restore: start
+	cd backup && zip -r server.zip server/
+	docker cp backup/server.zip minecraft-custom:/root/
+	docker exec -it minecraft-custom /bin/zsh -c "rm -rf /root/server/* && unzip -o /root/server.zip -d /root/ && rm /root/server.zip"
+	rm -rf backup/server.zip

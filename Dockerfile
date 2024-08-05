@@ -45,6 +45,9 @@ RUN apt-get update && apt-get install -y build-essential
 # Install java 17
 RUN apt-get update && apt-get install -y openjdk-21-jdk
 
+# Install zip and unzip
+RUN apt-get update && apt-get install -y zip unzip
+
 # Install Minecraft
 RUN mkdir -p ~/backups
 RUN mkdir -p ~/tools

@@ -14,32 +14,23 @@ ifeq ($(OS),Windows_NT)
     .SHELLFLAGS := -NoProfile -Command
 endif
 
-all: build_run
+all: clean build_run
 
 build_run:
-ifeq ($(OS),Windows_NT)
-	@if ($$(docker ps -a -q --filter name=^minecraft-custom$$)) { make start; make attach; } else { make build; make run; }
-else
-	@if [ $$(docker ps -a -q --filter name=^minecraft-custom$$) ]; then \
-		$(MAKE) start; \
-		$(MAKE) attach; \
-	else \
-		$(MAKE) build; \
-		$(MAKE) run; \
-	fi
-endif
+	make build
+	make run
 
 build:
 	docker build -t minecraft-custom:latest .
 
 run:
-	-docker run -it --name minecraft-custom -p 25565:25565 minecraft-custom:latest
+	-docker run -it --name minecraft-custom -p 25565:25565 -v ./server:/root/server minecraft-custom:latest
 	docker stop minecraft-custom
 
 clean:
 	-docker stop minecraft-custom
 	-docker rm minecraft-custom
-	docker rmi minecraft-custom:latest
+	-docker rmi minecraft-custom:latest
 
 start:
 	docker start minecraft-custom
@@ -54,9 +45,3 @@ backup:
 	rm -rf backup/server
 	mkdir -p backup/
 	docker cp minecraft-custom:/root/server/ backup/
-
-restore: start
-	cd backup && zip -r server.zip server/
-	docker cp backup/server.zip minecraft-custom:/root/
-	docker exec -it minecraft-custom /bin/zsh -c "rm -rf /root/server/* && unzip -o /root/server.zip -d /root/ && rm /root/server.zip"
-	rm -rf backup/server.zip

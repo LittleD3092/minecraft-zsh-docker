@@ -10,6 +10,14 @@ Please install docker and make on your computer.
 
 ## Running the server
 
+First, create a folder named `server` in the root of the project. This folder will contain the server files and will be mounted into the docker container. If you have a backup of the world, you can put the world files in the `server` folder. Otherwise, the server will generate a new world.
+
+```bash
+mkdir server
+```
+
+> If no jar file is found in the `server` folder, the starting script will download the latest server jar file from the internet.
+
 To run the server, simply go to the root of the project and run the following command:
 
 ```bash

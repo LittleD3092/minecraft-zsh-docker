@@ -48,22 +48,28 @@ RUN apt-get update && apt-get install -y openjdk-21-jdk
 # Install zip and unzip
 RUN apt-get update && apt-get install -y zip unzip
 
+# Install requests
+RUN apt-get update && apt-get install -y python3-pip
+RUN pip3 install requests
+
 # Install Minecraft
 RUN mkdir -p ~/backups
 RUN mkdir -p ~/tools
-RUN mkdir -p ~/server
 # rcon tool
 RUN git clone https://github.com/Tiiffi/mcrcon.git ~/tools/mcrcon
 RUN cd ~/tools/mcrcon && make && make install
 
-# Copy server files
-COPY server/ /root/server
-RUN cd /root/server && echo "eula=true" > eula.txt
-
 # Script for running server
+# vanilla server
 COPY scripts/start-vanilla-server.sh /root/start-vanilla-server.sh
 RUN sed -i 's/\r//' /root/start-vanilla-server.sh
 RUN chmod +x /root/start-vanilla-server.sh
 
+# server_download.py
+COPY scripts/server_download.py /root/server_download.py
+RUN sed -i 's/\r//' /root/server_download.py
+RUN chmod +x /root/server_download.py
+
 # Entry point
-ENTRYPOINT ["/bin/zsh"]
+ENTRYPOINT ["/root/start-vanilla-server.sh"]
+# ENTRYPOINT ["/bin/zsh"]

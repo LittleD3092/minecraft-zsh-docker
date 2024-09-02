@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 # Specify terminal color
-ENV TERM xterm-256color
+ENV TERM=xterm-256color
 
 # Install nvim
 RUN apt-get update && apt-get install -y neovim
@@ -70,6 +70,12 @@ COPY scripts/server_download.py /root/server_download.py
 RUN sed -i 's/\r//' /root/server_download.py
 RUN chmod +x /root/server_download.py
 
+# fabric server
+COPY scripts/start-fabric-server.sh /root/start-fabric-server.sh
+RUN sed -i 's/\r//' /root/start-fabric-server.sh
+RUN chmod +x /root/start-fabric-server.sh
+
 # Entry point
-ENTRYPOINT ["/root/start-vanilla-server.sh"]
+# ENTRYPOINT ["/root/start-vanilla-server.sh"]
+ENTRYPOINT ["/root/start-fabric-server.sh"]
 # ENTRYPOINT ["/bin/zsh"]
